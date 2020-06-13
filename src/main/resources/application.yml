@@ -1,0 +1,23 @@
+spring:
+  profiles:
+  application:
+    name: user-service
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 59502
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+---
+
+spring:
+  profiles: default
+  datasource:
+    url: jdbc:h2:mem:api
+    username: sa
