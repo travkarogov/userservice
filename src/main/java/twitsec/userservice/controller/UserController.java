@@ -1,6 +1,5 @@
 package twitsec.userservice.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -24,9 +23,6 @@ public class UserController {
 
     @PostMapping("/create")
     public ResponseEntity<User> create(@RequestBody User user) throws URISyntaxException {
-
-        System.out.println(user.getProfile());
-
         User createdUser = userRepository.save(user);
         if (createdUser == null){
             return ResponseEntity.notFound().build();
@@ -41,10 +37,6 @@ public class UserController {
     public Optional<User> findById(@PathVariable("id") int id){
         var user = userRepository.findById(id);
 
-        System.out.println(user);
-
-        //TODO: testen met en zonder password null
-        //user.get().setPassword(null);
         return user;
     }
 }
