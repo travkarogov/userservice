@@ -1,0 +1,26 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: user-service
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+        - name: user-service
+          image: eu.gcr.io/fontys-276211/user-service
+          ports:
+            - containerPort: 59502
+          resources:
+            requests:
+              cpu: 100m
+            limits:
+              cpu: 100m

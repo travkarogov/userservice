@@ -30,4 +30,10 @@ public class User {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Profile profile;
+
+    public User(int userid, String email, Profile profile){
+        this.id = userid;
+        this.email = email;
+        this.profile = profile;
+    }
 }
