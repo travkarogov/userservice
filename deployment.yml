@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: user-service
+  name: userservice
 spec:
   replicas: 1
   strategy:
@@ -12,11 +12,11 @@ spec:
   template:
     metadata:
       labels:
-        app: user-service
+        app: userservice
     spec:
       containers:
         - name: user-service
-          image: eu.gcr.io/s62-1-278920/user-service
+          image: eu.gcr.io/s62-1-278920/userservice
           ports:
             - containerPort: 59502
           resources:

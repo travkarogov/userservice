@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: gke-user-service
+  name: gke-userservice
 spec:
   ports:
     - name: "49502"
       port: 49502
       targetPort: 49502
   selector:
-    app: user-service
+    app: userservice
