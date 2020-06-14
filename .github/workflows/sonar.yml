@@ -1,0 +1,15 @@
+name: SonarCloud Scan
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Run SonarCloud Scanner
+      run: mvn verify sonar:sonar
