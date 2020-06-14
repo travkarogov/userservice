@@ -24,7 +24,7 @@ public class UserController {
     public ResponseEntity<User> create(@RequestBody User user) {
         User createdUser = userRepository.save(user);
 
-        if (user.getEmail() != null && createdUser.getEmail() == user.getEmail()){
+        if (user.getEmail() != null && createdUser.getEmail().equals(user.getEmail())){
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdUser.getId()).toUri();
             return ResponseEntity.created(uri).body(createdUser);
         }
