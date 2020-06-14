@@ -17,6 +17,10 @@
     <properties>
         <java.version>11</java.version>
         <maven.compiler.release>11</maven.compiler.release>
+        <sonar.projectKey>travkarogov_userservice</sonar.projectKey>
+        <sonar.organization>travkarogov</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.login>bdd2c3507afa6da50118a6c9e287666a16579668</sonar.login>
     </properties>
 
     <repositories>
