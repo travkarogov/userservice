@@ -23,12 +23,13 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity<User> create(@RequestBody User user) {
         User createdUser = userRepository.save(user);
-        if (createdUser == null){
-            return ResponseEntity.notFound().build();
-        }
-        else{
+
+        if (user.getEmail() != null && createdUser.getEmail() == user.getEmail()){
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdUser.getId()).toUri();
             return ResponseEntity.created(uri).body(createdUser);
+        }
+        else{
+            return ResponseEntity.notFound().build();
         }
     }
 

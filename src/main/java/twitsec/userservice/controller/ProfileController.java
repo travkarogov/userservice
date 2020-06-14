@@ -26,7 +26,7 @@ public class ProfileController {
     public ResponseEntity<Profile> create(@RequestBody Profile profile) {
         Profile createdProfile = profileRepository.save(profile);
 
-        if(createdProfile.getUsername() == profile.getUsername()){
+        if(profile.getUsername() != null && createdProfile.getUsername() == profile.getUsername()){
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdProfile.getId()).toUri();
             return ResponseEntity.created(uri).body(createdProfile);
         }
