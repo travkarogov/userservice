@@ -26,12 +26,12 @@ public class ProfileController {
     public ResponseEntity<Profile> create(@RequestBody Profile profile) {
         Profile createdProfile = profileRepository.save(profile);
 
-        if(createdProfile == null){
-            return ResponseEntity.notFound().build();
-        }
-        else {
+        if(createdProfile.getUsername() == profile.getUsername()){
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdProfile.getId()).toUri();
             return ResponseEntity.created(uri).body(createdProfile);
+        }
+        else {
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -39,7 +39,7 @@ public class ProfileController {
     public Optional<Profile> findById(@PathVariable("id") int id){
         var profile = profileRepository.findById(id);
 
-       profile.get().setTweets(tweetServiceCommunication.getTweets(id));
+        profile.ifPresent(value -> value.setTweets(tweetServiceCommunication.getTweets(id)));
 
         return profile;
     }

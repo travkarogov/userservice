@@ -36,7 +36,6 @@ public class Profile {
 
     private Date createdAt = new Date();
 
-    //TODO: testen deze vinden in tweetservice
     @Transient
     private Set<Tweet> tweets;
 }

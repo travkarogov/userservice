@@ -25,7 +25,6 @@ public class User {
 
     private String password;
 
-    //TODO: postman testen met role
     private Role role;
 
     @OneToOne(cascade = CascadeType.ALL)

@@ -11,6 +11,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class TweetServiceCommunication {
 
         var url = "http://localhost:59501/tweets/search/byProfileId?page=" + page + "&size=" + size + "&profileId=" + id;
 
-        Set<Tweet> tweetSet = new HashSet<Tweet>();
+        Set<Tweet> tweetSet = new HashSet<>();
 
         try {
             HttpRequest httpRequest = HttpRequest.newBuilder().GET()
@@ -40,9 +41,7 @@ public class TweetServiceCommunication {
 
             Tweet[] tweetList = new GsonBuilder().create().fromJson(jsonArray, Tweet[].class);
 
-            for (Tweet tweet : tweetList){
-                tweetSet.add(tweet);
-            }
+            tweetSet.addAll(Arrays.asList(tweetList));
         }
         catch (Exception e){
             e.printStackTrace();
