@@ -21,6 +21,12 @@ jobs:
           java-version: 11
       - name: Creating the Maven package
         run: mvn clean package -B -DskipTests
+      
+      - name: Run Sonarqube
+        run: mvn verify sonar:sonar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   test:
     name: Run the tests
