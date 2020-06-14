@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: user-service
-          image: eu.gcr.io/fontys-276211/user-service
+          image: eu.gcr.io/s62-1-278920/user-service
           ports:
             - containerPort: 59502
           resources:
