@@ -7,7 +7,6 @@ import twitsec.userservice.entity.User;
 import twitsec.userservice.repository.UserRepository;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Optional;
 
 @RestController
@@ -22,7 +21,7 @@ public class UserController {
     private final UserRepository userRepository;
 
     @PostMapping("/create")
-    public ResponseEntity<User> create(@RequestBody User user) throws URISyntaxException {
+    public ResponseEntity<User> create(@RequestBody User user) {
         User createdUser = userRepository.save(user);
         if (createdUser == null){
             return ResponseEntity.notFound().build();
