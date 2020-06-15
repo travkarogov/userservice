@@ -1,5 +1,7 @@
 package twitsec.userservice.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -36,5 +38,10 @@ public class UserController {
     @GetMapping("/{id}")
     public Optional<User> findById(@PathVariable("id") int id){
         return userRepository.findById(id);
+    }
+
+    @GetMapping
+    public Page<User> findAll(Pageable pageable){
+        return userRepository.findAll(pageable);
     }
 }

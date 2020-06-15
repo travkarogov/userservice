@@ -33,9 +33,13 @@ public class Profile {
 
     private String websiteUrl;
 
-
     private Date createdAt = new Date();
 
     @Transient
     private Set<Tweet> tweets;
+
+    public Profile(String username, String bio){
+        this.username = username;
+        this.bio = bio;
+    }
 }

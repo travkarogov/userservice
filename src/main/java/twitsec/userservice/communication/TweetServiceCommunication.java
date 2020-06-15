@@ -24,7 +24,7 @@ public class TweetServiceCommunication {
         var page = 0;
         var size = 25;
 
-        var url = "http://localhost:59501/tweets/search/byProfileId?page=" + page + "&size=" + size + "&profileId=" + id;
+        var url = "http://35.195.39.81/tweets/search/byProfileId?page=" + page + "&size=" + size + "&profileId=" + id;
 
         Set<Tweet> tweetSet = new HashSet<>();
 
