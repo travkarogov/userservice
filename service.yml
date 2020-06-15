@@ -8,4 +8,4 @@ spec:
       port: 49502
       targetPort: 49502
   selector:
-    app: userservice
+    app: user
