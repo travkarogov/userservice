@@ -1,5 +1,6 @@
 package twitsec.userservice.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -42,5 +43,10 @@ public class ProfileController {
        profile.get().setTweets(tweetServiceCommunication.getTweets(id));
 
         return profile;
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<Object> healthy(){
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
