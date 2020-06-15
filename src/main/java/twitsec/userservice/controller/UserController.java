@@ -1,6 +1,7 @@
 package twitsec.userservice.controller;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -40,8 +41,8 @@ public class UserController {
         return user;
     }
 
-    @GetMapping("/")
-    public ResponseEntity<Object> healthy(){
-        return ResponseEntity.status(HttpStatus.OK).build();
+    @GetMapping
+    public Page<User> findAll(Pageable pageable){
+        return userRepository.findAll(pageable);
     }
 }
