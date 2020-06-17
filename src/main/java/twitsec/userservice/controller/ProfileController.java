@@ -1,11 +1,14 @@
 package twitsec.userservice.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import twitsec.userservice.communication.TweetServiceCommunication;
+import twitsec.userservice.controller.exception.NotAuthorizedException;
 import twitsec.userservice.entity.Profile;
 import twitsec.userservice.repository.ProfileRepository;
+import twitsec.userservice.service.JwtTokenComponent;
 
 
 import java.net.URI;
@@ -14,33 +17,23 @@ import java.util.Optional;
 @RestController("ProfileController")
 @RequestMapping("/profiles")
 @CrossOrigin("*")
+@RequiredArgsConstructor
 public class ProfileController {
 
-    public ProfileController(ProfileRepository profileRepository){ this.profileRepository = profileRepository; }
-
     private final ProfileRepository profileRepository;
-
-    private TweetServiceCommunication tweetServiceCommunication = new TweetServiceCommunication();
-
-    @PostMapping("/create")
-    public ResponseEntity<Profile> create(@RequestBody Profile profile) {
-        Profile createdProfile = profileRepository.save(profile);
-
-        if(profile.getUsername() != null && createdProfile.getUsername().equals(profile.getUsername())){
-            URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdProfile.getId()).toUri();
-            return ResponseEntity.created(uri).body(createdProfile);
-        }
-        else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+    private final TweetServiceCommunication tweetServiceCommunication;
+    private final JwtTokenComponent tokenComponent;
 
     @GetMapping("/{id}")
-    public Optional<Profile> findById(@PathVariable("id") int id){
-        var profile = profileRepository.findById(id);
+    public Optional<Profile> findById(@RequestHeader("Authorization") final String token, @PathVariable("id") final int profileId){
+        if(tokenComponent.validateJwt(token) && tokenComponent.getProfileIdFromToken(token) == profileId){
+            var profile = profileRepository.findById(profileId);
 
-        profile.ifPresent(value -> value.setTweets(tweetServiceCommunication.getTweets(id)));
+            profile.ifPresent(value -> value.setTweets(tweetServiceCommunication.getTweets(profileId)));
 
-        return profile;
+            return profile;
+        }
+
+        throw new NotAuthorizedException("Not authorized to perform this action");
     }
 }
