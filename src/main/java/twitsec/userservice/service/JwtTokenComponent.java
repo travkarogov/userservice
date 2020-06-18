@@ -5,6 +5,7 @@ import javax.xml.bind.DatatypeConverter;
 import io.jsonwebtoken.Jwts;
 import com.auth0.jwt.JWT;
 import twitsec.userservice.model.Role;
+import twitsec.userservice.service.exception.TokenInvalidException;
 
 @Component
 public class JwtTokenComponent {
@@ -16,16 +17,12 @@ public class JwtTokenComponent {
             Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY)).parseClaimsJws(jwt.replace("Bearer", "").trim()).getBody();
             return true;
         }catch(Exception ex){
-            return false;
+            throw new TokenInvalidException("Provided token is invalid");
         }
     }
 
     public int getUserIdFromToken(final String token){
         return JWT.decode(token).getClaim("userId").asInt();
-    }
-
-    public int getProfileIdFromToken(final String token){
-        return JWT.decode(token).getClaim("profileId").asInt();
     }
 
     public String getEmailFromToken(final String token){

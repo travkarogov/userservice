@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 import twitsec.userservice.model.Tweet;
 
 import java.net.URI;
+import java.net.http.HttpResponse;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;

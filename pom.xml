@@ -10,13 +10,13 @@
     </parent>
     <groupId>twitsec</groupId>
     <artifactId>userservice</artifactId>
-    <version>2.2.2.RELEASE</version>
+    <version>1.0.0.RELEASE</version>
     <name>userservice</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
-        <java.version>14</java.version>
-        <maven.compiler.release>14</maven.compiler.release>
+        <java.version>11</java.version>
+        <maven.compiler.release>11</maven.compiler.release>
         <sonar.projectKey>travkarogov_userservice</sonar.projectKey>
         <sonar.organization>travkarogov</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>

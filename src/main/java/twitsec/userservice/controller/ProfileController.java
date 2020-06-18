@@ -26,7 +26,7 @@ public class ProfileController {
 
     @GetMapping("/{id}")
     public Optional<Profile> findById(@RequestHeader("Authorization") final String token, @PathVariable("id") final int profileId){
-        if(tokenComponent.validateJwt(token) && tokenComponent.getProfileIdFromToken(token) == profileId){
+        if(tokenComponent.validateJwt(token)){
             var profile = profileRepository.findById(profileId);
 
             profile.ifPresent(value -> value.setTweets(tweetServiceCommunication.getTweets(profileId)));
