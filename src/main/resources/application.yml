@@ -6,6 +6,20 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  main:
+    allow-bean-definition-overriding: true
+twitsec:
+  rabbitmq:
+    exchange: twitsec.exchange
+    authqueue: auth.queue
+    authroutingkey: auth
+    tweetqueue: tweet.queue
+    tweetroutingkey: tweet
 
 server:
   port: 49502

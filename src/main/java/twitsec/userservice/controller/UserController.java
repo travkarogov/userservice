@@ -4,13 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import twitsec.userservice.controller.exception.NoTokenProvidedException;
 import twitsec.userservice.controller.exception.NotAuthorizedException;
 import twitsec.userservice.entity.User;
 import twitsec.userservice.model.Role;
 import twitsec.userservice.repository.UserRepository;
 import twitsec.userservice.service.JwtTokenComponent;
+import twitsec.userservice.service.RabbitMQSender;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.Optional;
 
@@ -22,11 +23,10 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final JwtTokenComponent tokenComponent;
+    private final RabbitMQSender sender;
 
     @PostMapping("/create")
     public ResponseEntity<User> create(@RequestHeader("Authorization") final String token, @RequestBody final User user) {
-        if(token.isEmpty()) throw new NoTokenProvidedException("Token is empty");
-
         if(tokenComponent.validateJwt(token) && tokenComponent.getRoleFromToken(token) == Role.COMMUNICATION){
             User createdUser = userRepository.save(user);
 
@@ -41,8 +41,6 @@ public class UserController {
 
     @GetMapping("/{id}")
     public Optional<User> findById(@RequestHeader("Authorization") final String token, @PathVariable("id") final int id){
-        if(token.isEmpty()) throw new NoTokenProvidedException("Token is empty");
-
         if(tokenComponent.validateJwt(token) &&
                 tokenComponent.getRoleFromToken(token) == Role.COMMUNICATION ){
             return userRepository.findById(id);
@@ -56,8 +54,6 @@ public class UserController {
 
     @GetMapping("/email")
     public Optional<User> findByEmail(@RequestHeader("Authorization") final String token, @RequestParam("email") final String email){
-        if(token.isEmpty()) throw new NoTokenProvidedException("Token is empty");
-
         if(tokenComponent.validateJwt(token) &&
                 tokenComponent.getRoleFromToken(token) == Role.COMMUNICATION ){
             if(userRepository.findByEmail(email).isPresent()){
@@ -78,12 +74,10 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public String delete(@RequestHeader("Authorization") final String token, @PathVariable("id") final int id){
-        if(token.isEmpty()) throw new NoTokenProvidedException("Token is empty");
-
-        if(tokenComponent.validateJwt(token) && tokenComponent.getUserIdFromToken(token) == id){
-            //TODO: send message to tweetservice to delete all tweets based on profile id (make queue; twitsec.tweet.delete)
-            //TODO: send message to authservice to delete TOTP entry (make queue; twitsec.auth.delete)
-            //TODO: delete user and profile
+        if(tokenComponent.validateJwt(token) && tokenComponent.getUserIdFromToken(token) == id && userRepository.findById(id).isPresent()){
+            sender.sendDeleteRequestAuthService(token);
+            sender.sendDeleteRequestTweetService(token);
+            userRepository.deleteById(id);
             return "Account deleted";
         }
 

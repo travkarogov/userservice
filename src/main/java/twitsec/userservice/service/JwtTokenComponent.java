@@ -25,6 +25,10 @@ public class JwtTokenComponent {
         return JWT.decode(token).getClaim("userId").asInt();
     }
 
+    public int getProfileIdFromToken(final String token){
+        return JWT.decode(token).getClaim("profileId").asInt();
+    }
+
     public String getEmailFromToken(final String token){
         return JWT.decode(token).getClaim("email").asString();
     }
